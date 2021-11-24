@@ -1,0 +1,19 @@
+---
+# Source: metallb/templates/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metallb
+  labels:
+    helm.sh/chart: metallb-0.11.0
+    app.kubernetes.io/name: metallb
+    app.kubernetes.io/instance: metallb
+    app.kubernetes.io/version: "v0.11.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  config: |
+    address-pools:
+    - addresses:
+      - 192.168.168.0/24
+      name: default
+      protocol: layer2

@@ -1,0 +1,29 @@
+---
+# Source: grafana/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: grafana
+  labels:
+    helm.sh/chart: grafana-6.17.5
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/version: "8.2.3"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  tls:
+    - hosts:
+      - grafana.seagull.ryusa.net
+      secretName: grafana-tls
+  rules:
+    - host: grafana.seagull.ryusa.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 80

@@ -1,0 +1,85 @@
+---
+# Source: metallb/templates/podmonitor.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: metallb-prometheus
+  namespace: metallb
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+---
+# Source: metallb/templates/podmonitor.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: metallb-prometheus
+  namespace: metallb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: metallb-prometheus
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-k8s
+    namespace: prometheus
+---
+# Source: metallb/templates/podmonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: metallb-controller
+  labels:
+    helm.sh/chart: metallb-0.11.0
+    app.kubernetes.io/name: metallb
+    app.kubernetes.io/instance: metallb
+    app.kubernetes.io/version: "v0.11.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+    team: system
+spec:
+  jobLabel: "app.kubernetes.io/name"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metallb
+      app.kubernetes.io/instance: metallb
+      app.kubernetes.io/component: controller
+  namespaceSelector:
+    matchNames:
+    - metallb
+  podMetricsEndpoints:
+  - port: metrics
+    path: /metrics
+---
+# Source: metallb/templates/podmonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: metallb-speaker
+  labels:
+    helm.sh/chart: metallb-0.11.0
+    app.kubernetes.io/name: metallb
+    app.kubernetes.io/instance: metallb
+    app.kubernetes.io/version: "v0.11.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: speaker
+    team: system
+spec:
+  jobLabel: "app.kubernetes.io/name"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metallb
+      app.kubernetes.io/instance: metallb
+      app.kubernetes.io/component: speaker
+  namespaceSelector:
+    matchNames:
+    - metallb
+  podMetricsEndpoints:
+  - port: metrics
+    path: /metrics

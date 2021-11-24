@@ -1,0 +1,22 @@
+---
+# Source: vcluster/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: speedtest-cluster
+  namespace: speedtest-cluster
+  labels:
+    app: vcluster
+    chart: "vcluster-0.4.3"
+    release: "speedtest-cluster"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8443
+      protocol: TCP
+  selector:
+    app: vcluster
+    release: speedtest-cluster

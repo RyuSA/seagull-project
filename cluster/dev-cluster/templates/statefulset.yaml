@@ -1,0 +1,104 @@
+---
+# Source: vcluster/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dev-cluster
+  namespace: dev-cluster
+  labels:
+    app: vcluster
+    chart: "vcluster-0.4.3"
+    release: "dev-cluster"
+    heritage: "Helm"
+spec:
+  serviceName: dev-cluster-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vcluster
+      release: dev-cluster
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: 
+        resources:
+          requests:
+            storage: 5Gi
+  template:
+    metadata:
+      labels:
+        app: vcluster
+        release: dev-cluster
+    spec:
+      terminationGracePeriodSeconds: 10
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+      serviceAccountName: vc-dev-cluster
+      containers:
+      - image: rancher/k3s:v1.22.2-k3s1
+        name: vcluster
+        command:
+          - "/bin/k3s"
+        args:
+          - "server"
+          - "--write-kubeconfig=/k3s-config/kube-config.yaml"
+          - "--data-dir=/data"
+          - "--disable=traefik,servicelb,metrics-server,local-storage"
+          - "--disable-network-policy"
+          - "--disable-agent"
+          - "--disable-scheduler"
+          - "--disable-cloud-controller"
+          - "--flannel-backend=none"
+          - "--kube-controller-manager-arg=controllers=*,-nodeipam,-nodelifecycle,-persistentvolume-binder,-attachdetach,-persistentvolume-expander,-cloud-node-lifecycle"
+          - "--service-cidr=10.100.0.0/16"
+        env:
+          []
+        volumeMounts:
+          - mountPath: /data
+            name: data
+        resources:
+          limits:
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      - name: syncer
+        image: "loftsh/vcluster:0.4.3"
+        args:
+          - --service-name=dev-cluster
+          - --suffix=dev-cluster
+          - --owning-statefulset=dev-cluster
+          - --out-kube-config-secret=vc-dev-cluster
+          - --tls-san=w349ytr.seagull.ryusa.net
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8443
+            scheme: HTTPS
+          failureThreshold: 10
+          initialDelaySeconds: 60
+          periodSeconds: 2
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8443
+            scheme: HTTPS
+          failureThreshold: 30
+          periodSeconds: 2
+        env:
+          []
+        volumeMounts:
+          - mountPath: /data
+            name: data
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi

@@ -1,0 +1,22 @@
+---
+# Source: prometheus-pushgateway/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: speedtest-pushgateway
+  namespace: prometheus
+  labels:
+    app: prometheus-pushgateway
+    team: system
+spec:
+  endpoints:
+  - port: http
+    path: /metrics
+    honorLabels: true
+  namespaceSelector:
+    matchNames:
+      - speedtest-cluster
+  selector:
+    matchLabels:
+      app: prometheus-pushgateway
+      release: speedtest

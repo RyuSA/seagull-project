@@ -1,0 +1,23 @@
+---
+# Source: prometheus-pushgateway/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: speedtest-pushgateway
+  annotations:
+    {}
+  labels:
+    app: prometheus-pushgateway
+    chart: prometheus-pushgateway-1.13.0
+    heritage: Helm
+    release: speedtest
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9091
+      targetPort: 9091
+      protocol: TCP
+      name: http
+  selector:
+    app: prometheus-pushgateway
+    release: speedtest

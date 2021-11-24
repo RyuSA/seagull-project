@@ -1,0 +1,22 @@
+---
+# Source: vcluster/templates/statefulset-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: speedtest-cluster-headless
+  namespace: speedtest-cluster
+  labels:
+    app: speedtest-cluster-vcluster
+    chart: "vcluster-0.4.3"
+    release: "speedtest-cluster"
+    heritage: "Helm"
+spec:
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8443
+      protocol: TCP
+  clusterIP: None
+  selector:
+    app: vcluster
+    release: "speedtest-cluster"

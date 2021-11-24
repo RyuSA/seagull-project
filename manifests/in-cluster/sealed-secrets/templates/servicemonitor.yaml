@@ -1,0 +1,28 @@
+---
+# Source: sealed-secrets/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sealed-secret-sealed-secrets
+  namespace: prometheus
+  labels:
+    app.kubernetes.io/name: sealed-secrets
+    helm.sh/chart: sealed-secrets-1.16.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: sealed-secret
+    app.kubernetes.io/version: v0.16.0
+    team: system
+spec:
+  endpoints:
+  - honorLabels: true
+    targetPort: 8080
+  namespaceSelector:
+    matchNames:
+    - sealed-secrets
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sealed-secrets
+      helm.sh/chart: sealed-secrets-1.16.1
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/instance: sealed-secret
+      app.kubernetes.io/version: v0.16.0

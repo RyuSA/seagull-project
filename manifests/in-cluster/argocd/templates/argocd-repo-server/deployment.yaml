@@ -1,0 +1,103 @@
+---
+# Source: argo-cd/templates/argocd-repo-server/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+  labels:
+    helm.sh/chart: argo-cd-3.26.5
+    app.kubernetes.io/name: argocd-repo-server
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.1.6"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/instance: argocd
+  revisionHistoryLimit: 5
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: argo-cd-3.26.5
+        app.kubernetes.io/name: argocd-repo-server
+        app.kubernetes.io/instance: argocd
+        app.kubernetes.io/component: repo-server
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: argocd
+        app.kubernetes.io/version: "v2.1.6"
+    spec:
+      containers:
+      - name: repo-server
+        image: quay.io/argoproj/argocd:v2.1.6
+        imagePullPolicy: IfNotPresent
+        args:
+        - argocd-repo-server
+        - --redis
+        - argocd-redis:6379
+        - --logformat
+        - text
+        - --loglevel
+        - info
+        volumeMounts:
+        - mountPath: /app/config/gpg/source
+          name: gpg-keys
+        - mountPath: /app/config/gpg/keys
+          name: gpg-keyring
+        - mountPath: /app/config/ssh
+          name: ssh-known-hosts
+        - mountPath: /app/config/reposerver/tls
+          name: argocd-repo-server-tls
+        - mountPath: /tmp
+          name: tmp-dir
+        ports:
+        - name: repo-server
+          containerPort: 8081
+          protocol: TCP
+        
+        livenessProbe:
+          tcpSocket:
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          {}
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      serviceAccountName: default
+      volumes:
+      - name: gpg-keys
+        configMap:
+          name: argocd-gpg-keys-cm
+      - emptyDir: {}
+        name: gpg-keyring
+      - configMap:
+          name: argocd-ssh-known-hosts-cm
+        name: ssh-known-hosts
+      - name: argocd-repo-server-tls
+        secret:
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+          - key: ca.crt
+            path: ca.crt
+          optional: true
+          secretName: argocd-repo-server-tls
+      - emptyDir: {}
+        name: tmp-dir

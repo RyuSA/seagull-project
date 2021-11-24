@@ -1,0 +1,22 @@
+---
+# Source: vcluster/templates/statefulset-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-cluster-headless
+  namespace: dev-cluster
+  labels:
+    app: dev-cluster-vcluster
+    chart: "vcluster-0.4.3"
+    release: "dev-cluster"
+    heritage: "Helm"
+spec:
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8443
+      protocol: TCP
+  clusterIP: None
+  selector:
+    app: vcluster
+    release: "dev-cluster"

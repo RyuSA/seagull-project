@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: speedtest
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: speedtest
+    server: https://9430wtuw.seagull.ryusa.net
+  project: default
+  source:
+    path: manifests/dev-cluster/speedtest
+    repoURL: https://github.com/ryusa/seagull-project.git
+    targetRevision: HEAD
+    directory:
+      recurse: true
+      exclude: monitor/*
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: speedtest-monitor
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: speedtest-cluster
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/dev-cluster/speedtest/monitor
+    repoURL: https://github.com/ryusa/seagull-project.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

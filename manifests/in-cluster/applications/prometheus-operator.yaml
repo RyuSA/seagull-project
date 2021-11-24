@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-operator
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: prometheus-operator
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/in-cluster/prometheus-operator
+    repoURL: https://github.com/ryusa/seagull-project.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

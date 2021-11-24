@@ -1,0 +1,20 @@
+---
+# Source: vcluster/templates/rbac/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dev-cluster
+  namespace: dev-cluster
+  labels:
+    app: vcluster
+    chart: "vcluster-0.4.3"
+    release: "dev-cluster"
+    heritage: "Helm"
+subjects:
+  - kind: ServiceAccount
+    name: vc-dev-cluster
+    namespace: dev-cluster
+roleRef:
+  kind: Role
+  name: dev-cluster
+  apiGroup: rbac.authorization.k8s.io

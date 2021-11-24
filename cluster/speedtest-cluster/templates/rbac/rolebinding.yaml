@@ -1,0 +1,20 @@
+---
+# Source: vcluster/templates/rbac/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: speedtest-cluster
+  namespace: speedtest-cluster
+  labels:
+    app: vcluster
+    chart: "vcluster-0.4.3"
+    release: "speedtest-cluster"
+    heritage: "Helm"
+subjects:
+  - kind: ServiceAccount
+    name: vc-speedtest-cluster
+    namespace: speedtest-cluster
+roleRef:
+  kind: Role
+  name: speedtest-cluster
+  apiGroup: rbac.authorization.k8s.io

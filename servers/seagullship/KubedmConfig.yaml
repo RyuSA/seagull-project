@@ -1,0 +1,15 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+kubernetesVersion: 1.22.0
+controlPlaneEndpoint: "seagullship.sea.ryusa.net:6443"
+networking:
+  podSubnet: "10.1.0.0/16"
+  serviceSubnet: 10.96.0.0/16
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd
+authentication:
+  anonymous:
+    enabled: false
+rotateCertificates: true
