@@ -11,7 +11,7 @@ nfs:
   server: nfs.seagull.ryusa.net
   path: /
   mountOptions:
-  volumeName: nfs-subdir-external-provisioner-root
+  volumeName: nfs-subdir-external-provisioner
   # Reclaim policy for the main nfs volume
   reclaimPolicy: Retain
 

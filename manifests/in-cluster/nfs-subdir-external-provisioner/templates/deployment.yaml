@@ -30,7 +30,7 @@ spec:
           image: "k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2"
           imagePullPolicy: IfNotPresent
           volumeMounts:
-            - name: nfs-subdir-external-provisioner-root
+            - name: nfs-subdir-external-provisioner
               mountPath: /persistentvolumes
           env:
             - name: PROVISIONER_NAME
@@ -40,7 +40,7 @@ spec:
             - name: NFS_PATH
               value: /
       volumes:
-        - name: nfs-subdir-external-provisioner-root
+        - name: nfs-subdir-external-provisioner
           nfs:
             server: nfs.seagull.ryusa.net
             path: /
