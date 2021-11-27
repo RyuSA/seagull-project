@@ -795,14 +795,14 @@ server:
   ## Certificate configuration
   certificate:
     # -- Enables a certificate manager certificate
-    enabled: false
+    enabled: true
     # -- Certificate manager domain
-    domain: argocd.example.com
+    domain: argocd.seagull.ryusa.net
     issuer:
       # -- Certificate manager issuer
-      kind: # ClusterIssuer
+      kind: ClusterIssuer
       # -- Certificate manager name
-      name: # letsencrypt
+      name: letsencrypt
     # -- Certificate manager additional hosts
     additionalHosts: []
     # -- Certificate manager secret name
@@ -846,7 +846,7 @@ server:
   ## Server metrics service configuration
   metrics:
     # -- Deploy metrics service
-    enabled: false
+    enabled: true
     service:
       # -- Metrics service annotations
       annotations: {}
@@ -856,7 +856,7 @@ server:
       servicePort: 8083
     serviceMonitor:
       # -- Enable a prometheus ServiceMonitor
-      enabled: false
+      enabled: true
       # -- Prometheus ServiceMonitor interval
       interval: 30s
       # -- Prometheus [RelabelConfigs] to apply to samples before scraping
@@ -868,9 +868,10 @@ server:
         # prometheus: kube-prometheus
 
       # -- Prometheus ServiceMonitor namespace
-      namespace: ""  # monitoring
+      namespace: "prometheus"  # monitoring
       # -- Prometheus ServiceMonitor labels
-      additionalLabels: {}
+      additionalLabels: 
+        team: system
 
   serviceAccount:
     # -- Create server service account
@@ -884,7 +885,7 @@ server:
 
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: false
+    enabled: true
     # -- Additional ingress annotations
     annotations: {}
     # -- Additional ingress labels
@@ -897,8 +898,7 @@ server:
     ## Hostnames must be provided if Ingress is enabled.
     ## Secrets must be manually created in the namespace
     hosts:
-      []
-      # - argocd.example.com
+      - argocd.seagull.ryusa.net
 
     # -- List of ingress paths
     paths:
@@ -923,10 +923,9 @@ server:
 
     # -- Ingress TLS configuration
     tls:
-      []
-      # - secretName: argocd-tls-certificate
-      #   hosts:
-      #     - argocd.example.com
+      - secretName: argocd-server-tls
+        hosts:
+          - argocd.seagull.ryusa.net
 
     # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
     https: false
@@ -1338,7 +1337,7 @@ repoServer:
   ## Repo server metrics service configuration
   metrics:
     # -- Deploy metrics service
-    enabled: false
+    enabled: true
     service:
       # -- Metrics service annotations
       annotations: {}
@@ -1348,7 +1347,7 @@ repoServer:
       servicePort: 8084
     serviceMonitor:
       # -- Enable a prometheus ServiceMonitor
-      enabled: false
+      enabled: true
       # -- Prometheus ServiceMonitor interval
       interval: 30s
       # -- Prometheus [RelabelConfigs] to apply to samples before scraping
@@ -1360,9 +1359,10 @@ repoServer:
         # prometheus: kube-prometheus
 
       # -- Prometheus ServiceMonitor namespace
-      namespace: "" # "monitoring"
+      namespace: "prometheus" # "monitoring"
       # -- Prometheus ServiceMonitor labels
-      additionalLabels: {}
+      additionalLabels:
+        team: system
 
   ## Enable Admin ClusterRole resources.
   ## Enable if you would like to grant cluster rights to ArgoCD repo server.

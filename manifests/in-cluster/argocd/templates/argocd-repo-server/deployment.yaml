@@ -58,6 +58,9 @@ spec:
           containerPort: 8081
           protocol: TCP
         
+        - name: metrics
+          containerPort: 8084
+          protocol: TCP
         livenessProbe:
           tcpSocket:
             port: 8081
