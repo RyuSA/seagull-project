@@ -30,7 +30,7 @@ loft社の開発している仮想Kubernetesとしてk3sをデプロイするク
 # values.yaml修正
 # vcluster
 #   extraArgs:
-#    - --service-cidr=10.100.0.0/16
+#    - --service-cidr=10.96.0.0/16
 # ingress:
 #   enabled: true
 #   host: YOUR_DOMAIN
@@ -38,13 +38,13 @@ loft社の開発している仮想Kubernetesとしてk3sをデプロイするク
 # その他設定変更があれば
 
 # テンプレート作成
-❯ helm template dev-cluster loft/vcluster --include-crds --output-dir cluster -f cluster/dev-cluster/values --version 0.4.3 --namespace dev-cluster
+❯ helm template $CLUSTER_NAME loft/vcluster --include-crds --output-dir cluster -f cluster/$CLUSTER_NAME/values --version 0.4.3 --namespace $CLUSTER_NAME
 
 # Namespace作成
 # cluster/root配下にApplicationを追加
 
 # kubeconfigを取得する
-❯ kubectl exec -it -n NAMESPACE CLUSTER_NAME-0 -c syncer -- cat /root/.kube/config > kubeconfig.yaml
+❯ kubectl exec -it -n $NAMESPACE $CLUSTER_NAME-0 -c syncer -- cat /root/.kube/config > kubeconfig.yaml
 
 # Cluster登録のYAMLを作成
 # このSecretをArgoCDが読み取って、自動的にClusterとして組み込んでくれる
@@ -58,13 +58,13 @@ loft社の開発している仮想Kubernetesとしてk3sをデプロイするク
 apiVersion: v1
 kind: Secret
 metadata:
-  name: $clusterName-secret
+  name: $CLUSTER_NAME-secret
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: cluster
 type: Opaque
 stringData:
-  name: $clusterName
+  name: $CLUSTER_NAME
   server: $server
   config: |
     {
@@ -78,7 +78,7 @@ stringData:
 EOF
 
 # あとはSealedにしてArgoCDに食わせてあげるだけ
-❯ kubeseal --cert manifests/sealed-secrets/ignore/sealed-secrets.crt -f ./cluster.yaml -o yaml > sealed-cluster.yaml 
+❯ kubeseal --cert manifests/in-cluster/sealed-secrets/ignore/sealed-secrets.crt -f ./cluster.yaml -o yaml > sealed-cluster.yaml
 ```
 
 ## コンテクスト
