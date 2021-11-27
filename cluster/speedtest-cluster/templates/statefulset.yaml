@@ -17,15 +17,6 @@ spec:
     matchLabels:
       app: vcluster
       release: speedtest-cluster
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: 
-        resources:
-          requests:
-            storage: 5Gi
   template:
     metadata:
       labels:
@@ -40,6 +31,9 @@ spec:
       tolerations:
         []
       serviceAccountName: vc-speedtest-cluster
+      volumes:
+      - name: data
+        emptyDir: {}
       containers:
       - image: rancher/k3s:v1.22.2-k3s1
         name: vcluster

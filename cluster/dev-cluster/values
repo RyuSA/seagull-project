@@ -57,7 +57,7 @@ vcluster:
 storage:
   # If this is disabled, vcluster will use an emptyDir instead
   # of a PersistentVolumeClaim
-  persistence: true
+  persistence: false
   # Size of the persistent volume claim
   size: 5Gi
   # Optional StorageClass used for the pvc
