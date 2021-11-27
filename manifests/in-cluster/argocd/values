@@ -688,8 +688,10 @@ server:
     imagePullPolicy: "" # IfNotPresent
 
   # -- Additional command line arguments to pass to Argo CD server
-  extraArgs: []
-  #  - --insecure
+  extraArgs:
+    # TLS終端をIngressに任せるため、ここではなにもしない
+    # https://github.com/argoproj/argo-cd/issues/2953
+    - --insecure
 
   # This flag is used to either remove or pass the CLI flag --staticassets /shared/app to the Argo CD server app
   staticAssets:
@@ -793,9 +795,10 @@ server:
   #    memory: 64Mi
 
   ## Certificate configuration
+  # バージョンが古いのでSelf-managed
   certificate:
     # -- Enables a certificate manager certificate
-    enabled: true
+    enabled: false
     # -- Certificate manager domain
     domain: argocd.seagull.ryusa.net
     issuer:
