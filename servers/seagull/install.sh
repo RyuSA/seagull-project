@@ -1,3 +1,8 @@
+# Ubuntu21.10のRaspberry Pi 4のKernelにはVXLANのモジュールが含まれていない
+# そのためデフォルトのUbuntu21.10 for rasp上ではCalico含むCNIが起動できなくなる
+# そこで不足したモジュールをlinux-modules-extra-raspiでインストールする必要がある
+# apt update && apt install linux-modules-extra-raspi -y && reboot
+
 # prepare install containerd and kubernetes
 cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -20,7 +25,7 @@ net.bridge.bridge-nf-call-ip6tables = 1
 EOF
 
 apt update && apt upgrade -y
-apt install apt-transport-https ca-certificates curl gnupg lsb-release nfs-common -y
+apt install apt-transport-https ca-certificates curl gnupg lsb-release nfs-common iptables arptables ebtables -y
 update-alternatives --set iptables /usr/sbin/iptables-legacy
 update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 update-alternatives --set arptables /usr/sbin/arptables-legacy
@@ -30,7 +35,7 @@ sysctl --system
 
 # install containerd
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get update
 apt-get install containerd.io
 mkdir -p /etc/containerd
