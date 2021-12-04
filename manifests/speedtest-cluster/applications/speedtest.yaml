@@ -11,7 +11,7 @@ spec:
     server: https://9430wtuw.seagull.ryusa.net
   project: default
   source:
-    path: manifests/dev-cluster/speedtest
+    path: manifests/speedtest-cluster/speedtest
     repoURL: https://github.com/ryusa/seagull-project.git
     targetRevision: HEAD
     directory:
@@ -35,7 +35,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: manifests/dev-cluster/speedtest/monitor
+    path: manifests/speedtest-cluster/speedtest/monitor
     repoURL: https://github.com/ryusa/seagull-project.git
     targetRevision: HEAD
   syncPolicy:

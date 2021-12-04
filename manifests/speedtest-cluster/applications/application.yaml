@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: manifests/dev-cluster/applications
+    path: manifests/speedtest-cluster/applications
     repoURL: https://github.com/ryusa/seagull-project.git
     targetRevision: HEAD
   syncPolicy:

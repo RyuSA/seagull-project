@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: speedtest
+  namespace: speedtest
+spec:
+  schedule: "*/3 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostNetwork: true
+          containers:
+          - image: ryusa/speedtest:v2.1.3
+            name: speedtest
+            args:
+            - --json
+            volumeMounts:
+            - name: log
+              mountPath: /var/log/
+            securityContext:
+              privileged: true
+          - name: sidecar
+            image: ryusa/speedtest-pusher:v2.1.3
+            volumeMounts:
+            - name: log
+              mountPath: /var/log/
+            env:
+            - name: TARGET_FILE_PATH
+              value: "/var/log/speedtest.json"
+            - name: MAX_TIMEOUT
+              value: "60"
+            - name: JOB_NAME
+              value: "speedtest"
+            - name: PUSHGATEWAY_HOST
+              value: "speedtest-pushgateway:9091"
+          restartPolicy: Never
+          volumes:
+          - name: log
+            emptyDir: {}
