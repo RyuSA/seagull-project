@@ -18,5 +18,5 @@ spec:
       - speedtest-cluster
   selector:
     matchLabels:
-      app: prometheus-pushgateway
-      release: speedtest
+      vcluster.loft.sh/label-speedtest-cluster-*: prometheus-pushgateway
+      vcluster.loft.sh/namespace: speedtest-x-speedtest-cluster
