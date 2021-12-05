@@ -12,6 +12,7 @@ metadata:
     app.kubernetes.io/version: "8.2.3"
     app.kubernetes.io/managed-by: Helm
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
       - grafana.seagull.ryusa.net
