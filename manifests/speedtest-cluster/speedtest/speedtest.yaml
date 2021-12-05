@@ -31,7 +31,7 @@ spec:
             - name: TARGET_FILE_PATH
               value: "/var/log/speedtest.json"
             - name: MAX_TIMEOUT
-              value: "60"
+              value: "120"
             - name: JOB_NAME
               value: "speedtest"
             - name: PUSHGATEWAY_HOST
