@@ -82,7 +82,12 @@ spec:
         - mountPath: /app/config/controller/tls
           name: argocd-repo-server-tls
         resources:
-          {}
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
       nodeSelector:
         kubernetes.io/arch: amd64
       serviceAccountName: argocd-application-controller

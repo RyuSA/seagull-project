@@ -33,7 +33,12 @@ spec:
         image: quay.io/argoproj/argocd:v2.1.6
         imagePullPolicy: IfNotPresent
         resources:
-          {}
+          limits:
+            cpu: 50m
+            memory: 64Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
         command:
         - cp
         - -n
@@ -65,7 +70,12 @@ spec:
         - mountPath: /shared
           name: static-files
         resources:
-          {}
+          limits:
+            cpu: 50m
+            memory: 64Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
       nodeSelector:
         kubernetes.io/arch: amd64
       serviceAccountName: argocd-dex-server

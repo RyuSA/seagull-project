@@ -78,7 +78,12 @@ spec:
           successThreshold: 1
           failureThreshold: 3
         resources:
-          {}
+          limits:
+            cpu: 50m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
       nodeSelector:
         kubernetes.io/arch: amd64
       serviceAccountName: default
