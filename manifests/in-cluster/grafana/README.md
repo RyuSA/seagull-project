@@ -19,3 +19,6 @@ Grafana
 
 ### 依存関係
 すべてデプロイするにはCertificate(cert-manager)とServiceMonitor(Prometheus)のCRDが必要。Prometheusはなくても動くが、ダッシュボードとして動かないのでPrometheusも起動済みであることが望ましい。
+
+### Operatorは使わんの？
+使えばよかったなとデプロイが一通り終わった今更思ってる。頼んだ、未来の僕

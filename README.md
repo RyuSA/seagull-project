@@ -8,11 +8,11 @@ Project seagullはRyuSAのおうちKubernetesを支えるGitOpsリポジトリ�
 ```bash
 .
 ├── cluster # Kubernetesディレクトリ
-│   ├── root # Bootstrap
+│   ├── in-cluster # Bootstrap
 │   └── ...
 │
 ├── manifests # 全マニフェストディレクトリ
-│   └── root # クラスターごとのマニフェストディレクトリ
+│   └── in-cluster # クラスターごとのマニフェストディレクトリ
 │       ├── applications # Bootstrap
 │       │   ├── application.yaml
 │       │   └── ...
@@ -26,7 +26,7 @@ Project seagullはRyuSAのおうちKubernetesを支えるGitOpsリポジトリ�
 ```
 
 ### clusters
-`clusters`配下にはrootクラスターの上で動く仮想Kubernetesの構成情報をGitOpsできるようなマニフェストがセットアップされています。
+`clusters`配下にはin-clusterクラスターの上で動く仮想Kubernetesの構成情報をGitOpsできるようなマニフェストがセットアップされています。
 
 ```bash
 .
@@ -42,7 +42,7 @@ Project seagullはRyuSAのおうちKubernetesを支えるGitOpsリポジトリ�
 
 App of Apps Patternで実装してあり、Bootstrap用の`cluster/root/root.yaml`をArgoCDに喰わせることで各仮想Kubernetesが次々とデプロイされていきます。
 
-接続のための設定は`cluster/$CLUSTER_NAME/kubeconfig.yaml`に記述されており、このファイルはrootクラスターにデプロイされているSealedSecretによって暗号化されている状態になってます。
+接続のための設定は`cluster/$CLUSTER_NAME/sealed-cluster.yaml`に記述されており、このファイルはrootクラスターにデプロイされているSealedSecretによって暗号化されている状態になってます。
 
 詳細 > [仮想Kubernetes管理](./cluster/READMD.md)
 
@@ -61,9 +61,9 @@ App of Apps Patternで実装してあり、Bootstrap用の`cluster/root/root.yam
 │   │   │   └── values
 │   │   └── ...
 │   │
-│   └── root
+│   └── in-cluster
 │       ├── applications
-│       │   ├── application.yaml # Bootstrap for root(in-cluster)
+│       │   ├── application.yaml # Bootstrap for in-cluster
 │       │   ├── argocd.yaml
 │       │   └── ...
 │       ├── argocd
@@ -102,4 +102,9 @@ App of Apps Patternで実装してあり、Bootstrap用の`manifests/$CLUSTER_NA
 ### Bootstrap Application
 #############################################
 ❯ kubectl apply -f manifests/in-cluster/applications/application.yaml
+
+#############################################
+### Bootstrap Cluster
+#############################################
+❯ kubectl apply -f cluster/root/root.yaml
 ```

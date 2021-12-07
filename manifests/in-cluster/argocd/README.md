@@ -13,8 +13,5 @@ ArgoCD
 
 ## Context
 
-### ArgoCDはセルフマネージド
-です。一度生のArgoCDをデプロイし、その後Applicationを通じて再デプロイされその後ArgoCDをArgoCD自身で管理していくことになります。
-が、さすがに自動同期までしてしまうとちょっと怖いので今回は自動同期はOFFにしてあります。
-
-https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#manage-argo-cd-using-argo-cd
+### ArgoCDはセルフマネージドやめた
+なんか唐突に自分自身消し始めるちょっと怖い事案が発生したのでセルフマネージドなArgoCDは取りやめること。原因特定したいのに、目の前で全部消えちゃったので何も残らず……

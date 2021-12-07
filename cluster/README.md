@@ -3,7 +3,7 @@
 ArgoCDを通じてvclusterを利用した仮想KubernetesをGitOpsでデプロイします。
 
 ## vcluster
-loft社の開発している仮想Kubernetesとしてk3sをデプロイするクラスター
+Loft Labs社の開発している仮想Kubernetesとしてk3sをデプロイするクラスター
 
 [vcluster](https://www.vcluster.com)
 
