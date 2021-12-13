@@ -6,7 +6,7 @@ metadata:
   name: grafana
   namespace: grafana
   labels:
-    helm.sh/chart: grafana-6.17.5
+    helm.sh/chart: grafana-6.19.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
     app.kubernetes.io/version: "8.2.3"
@@ -26,10 +26,10 @@ spec:
         app.kubernetes.io/name: grafana
         app.kubernetes.io/instance: grafana
       annotations:
-        checksum/config: eb294c1b8ba2c5add0406d27d379956b20ecdabad16be000d0b04d53f000034c
+        checksum/config: e823b6c43026f467982013c90df297297444d67b0cb3ac6d2a60ec20868d1141
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: d58ab40b3b5acb570973df8877dff42a1e8d56557494e43ab9fb08daf03f124b
+        checksum/secret: 3fb67fc5c5c4fb6f14ec008d2f78e82e7d92296974cbc0fcb2e8d788e29c801c
     spec:
       
       serviceAccountName: grafana
