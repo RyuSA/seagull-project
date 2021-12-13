@@ -4,7 +4,7 @@ metadata:
   name: speedtest
   namespace: speedtest
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
   jobTemplate:
