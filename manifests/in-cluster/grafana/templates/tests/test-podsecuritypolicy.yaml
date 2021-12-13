@@ -5,7 +5,7 @@ kind: PodSecurityPolicy
 metadata:
   name: grafana-test
   labels:
-    helm.sh/chart: grafana-6.17.5
+    helm.sh/chart: grafana-6.19.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
     app.kubernetes.io/version: "8.2.3"
