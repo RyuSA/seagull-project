@@ -44,7 +44,7 @@ Loft Labs社の開発している仮想Kubernetesとしてk3sをデプロイす�
 # cluster/root配下にApplicationを追加
 
 # kubeconfigを取得する
-❯ kubectl exec -it -n $NAMESPACE $CLUSTER_NAME-0 -c syncer -- cat /root/.kube/config > kubeconfig.yaml
+❯ kubectl exec -it -n $CLUSTER_NAME $CLUSTER_NAME-0 -c syncer -- cat /root/.kube/config > kubeconfig.yaml
 
 # Cluster登録のYAMLを作成
 # このSecretをArgoCDが読み取って、自動的にClusterとして組み込んでくれる
@@ -52,7 +52,7 @@ Loft Labs社の開発している仮想Kubernetesとしてk3sをデプロイす�
 ❯ server=YOUR_DOMAIN
 ❯ caData=`cat ./kubeconfig.yaml | grep certificate-authority-data | awk '{print $2}'`
 ❯ certData=`cat ./kubeconfig.yaml | grep client-certificate-data | awk '{print $2}'`
-❯ keyData=`cat ./kubeconfig.yaml | grep client-key-data | awk '{print $2}'` 
+❯ keyData=`cat ./kubeconfig.yaml | grep client-key-data | awk '{print $2}'`
 # YAML作成
 ❯ cat <<EOF > cluster.yaml
 apiVersion: v1
