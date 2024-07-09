@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: seagull-project
+  description: Home Kubernetes
+  tags:
+    - kubernetes
+  links:
+    - url: https://github.com/RyuSA/seagull-project
+      title: RyuSA/seagull-project
+      icon: github
+spec:
+  owner: user:RyuSA
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: MetalLB
+  description: "LoadBalancer Provisioner"
+  tags:
+    - kubernetes
+    - network
+  annotations:
+    backstage.io/source-location: url:https://github.com/RyuSA/seagull-project/tree/main/manifests/in-cluster/metallb
+  links:
+    - url: https://github.com/RyuSA/seagull-project/tree/main/manifests/in-cluster/metallb
+      title: metallb
+      icon: github
+spec:
+  type: ervice
+  lifecycle: experimental
+  owner: user:RyuSA
+  system: seagull-project
